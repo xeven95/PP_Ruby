@@ -3,8 +3,15 @@
 # and open the template in the editor.
 
 class Library
+  #Constructor
   def initialize (name, version, size)
     @name,@version= name,version
-    @size=size.to_f
+    @size=size
   end
+  
+  def to_s
+    "#{@name}, #{@version}, #{@size}"
+  end
+  
+  attr_reader :name,:version,:size
 end

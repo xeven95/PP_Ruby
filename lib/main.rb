@@ -1,5 +1,22 @@
-# To change this license header, choose License Headers in Project Properties.
-# To change this template file, choose Tools | Templates
-# and open the template in the editor.
+require "./Library"
+require "./Library_Manager"
+
+lm=LibraryManager.new
+l1=Library.new("docker","1.10",45)
+l2=Library.new("libc","4.56",21)
+l3=Library.new("gstreamer","2.2",123)
+l4=Library.new("array","3.3c",15)
+lm.addlibrary(l1)
+lm.addlibrary(l2)
+lm.addlibrary(l3)
+lm.addlibrary(l4)
+lm.addDependancy(l1, l2)
+lm.addDependancy(l1, l3)
+
+puts "Pruebas"
+puts "Generador de objetos:"
+puts l1
+puts lm
+puts "--------------"
 
 puts "Hello World"
