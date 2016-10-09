@@ -7,6 +7,7 @@ class Library
   def initialize (name, version, size)
     @name,@version= name,version
     @size=size
+    @dependencias=[]
   end
   
   def to_s
@@ -14,4 +15,5 @@ class Library
   end
   
   attr_reader :name,:version,:size
+  attr_accessor :dependencias
 end

@@ -19,4 +19,3 @@ puts l1
 puts lm
 puts "--------------"
 
-puts "Hello World"
