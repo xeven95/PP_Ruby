@@ -18,4 +18,6 @@ puts "Generador de objetos:"
 puts l1
 puts lm
 puts "--------------"
+lm.each_dependency(l1){|e| puts e}
+puts "--------------"
 

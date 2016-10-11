@@ -8,7 +8,7 @@ class LibraryManager
     @librerias = []
     @sizes=[]
     @versiones=Hash.new()
-    #@dependencias = Hash.new()
+    @dependencias = Hash.new()
   end
   
   #Añade las librerias al gesto
@@ -20,21 +20,35 @@ class LibraryManager
   
   def addDependancy(lib1,lib2)
     if @librerias.include?(lib1) && @librerias.include?(lib2) && lib1!=lib2
-      if lib1.dependencias.include?(lib2)
-        puts "Ya depende de esta libreria"
-      else
-        lib1.dependencias.push(lib2)
-      end
-      #if @dependencias.key?(lib1.name)
-       # @dependencias[lib1.name].push(lib2)
+      #if lib1.dependencias.include?(lib2)
+       # puts "Ya depende de esta libreria"
       #else
-       # @dependencias[lib1.name]=[lib2]
+       # lib1.dependencias.push(lib2)
       #end
+      if @dependencias.key?(lib1.name)
+        @dependencias[lib1.name].push(lib2)
+      else
+        @dependencias[lib1.name]=[lib2]
+      end
     else
       puts "ERROR: Alguna dde las librerias no se encuentra en el sistema"
     end  
   end
     
+  def each_dependency(lib)
+    depen=@dependencias[lib.name]
+    (depen.length).times() do |i|
+      yield depen[i]
+    end
+  end
+  
+  def each_deep_dependency(lib)
+    depen=@dependencias[lib.name]
+    (depen.length).times() do |i|
+      yield i
+    end
+  end
+  
   def to_s
     "Librerias: #{@librerias}\n"+"Versiones: #{@versiones}\n"+"Dependencias: #{@dependencias}"
   end
