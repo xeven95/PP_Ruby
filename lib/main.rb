@@ -12,12 +12,14 @@ lm.addlibrary(l3)
 lm.addlibrary(l4)
 lm.addDependancy(l1, l2)
 lm.addDependancy(l1, l3)
+lm.addDependancy(l2, l4)
+lm.addDependancy(l2, l3)
 
-puts "Pruebas"
 puts "Generador de objetos:"
 puts l1
 puts lm
 puts "--------------"
 lm.each_dependency(l1){|e| puts e}
 puts "--------------"
+lm.each_deep_dependency(l1){|e| puts e}
 

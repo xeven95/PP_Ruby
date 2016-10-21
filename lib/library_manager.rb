@@ -13,39 +13,56 @@ class LibraryManager
   
   #Añade las librerias al gesto
   def addlibrary (lib)
-    @librerias.push(lib)
-    @sizes.push(lib.size)
-    @versiones[lib.name]=lib.version
+    if !@librerias.include?(lib)#Comprobamos que ese obj no esta ya añadido
+      @librerias.push(lib)
+      @sizes.push(lib.size)
+      @versiones[lib.name]=lib.version
+    end
   end
   
+  #Añade las dependencias entre librerias
   def addDependancy(lib1,lib2)
+    #Comprobamos que ambas librerias fueron añadidas y que son distintas
     if @librerias.include?(lib1) && @librerias.include?(lib2) && lib1!=lib2
-      #if lib1.dependencias.include?(lib2)
-       # puts "Ya depende de esta libreria"
-      #else
-       # lib1.dependencias.push(lib2)
-      #end
+      #Si tiene ya alguna dependencia se le añade y si no se crea
       if @dependencias.key?(lib1.name)
-        @dependencias[lib1.name].push(lib2)
+        if !@dependencias[lib1.name].include?(lib2)
+          @dependencias[lib1.name].push(lib2)
+        end
       else
         @dependencias[lib1.name]=[lib2]
       end
     else
-      puts "ERROR: Alguna dde las librerias no se encuentra en el sistema"
+      puts "ERROR: Alguna de las librerias no se encuentra en el sistema"
     end  
   end
-    
+  
+  #Busqueda de dependencias
   def each_dependency(lib)
-    depen=@dependencias[lib.name]
-    (depen.length).times() do |i|
-      yield depen[i]
+    if (depen=@dependencias[lib.name])!=nil
+      depen.each { |elem|
+        yield elem
+      }
     end
   end
   
+  #Busqueda en profundidad de dependencias
   def each_deep_dependency(lib)
-    depen=@dependencias[lib.name]
-    (depen.length).times() do |i|
-      yield i
+    #Comprobamos que puede cargar dependencias en caso de que tenga
+    if (lista=@dependencias[lib.name])!=nil 
+      lista.each { |elem|
+        yield elem #Devolvemos el obj
+        if (aux=@dependencias[elem.name])!=nil
+          aux.each { |dep|
+            #Comprobamos que dep es distinto a la libreria original y que no hayamos o vayamos a pasar
+            if !lista.include?(dep) && dep!=lib
+              lista.push(dep)
+            end
+          }
+        end
+      }
+    else
+      yield "No tiene dependencias"
     end
   end
   
