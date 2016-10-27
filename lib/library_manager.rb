@@ -6,17 +6,13 @@ class LibraryManager
   #Constructor
   def initialize
     @librerias = []
-    @sizes=[]
-    @versiones=Hash.new()
     @dependencias = Hash.new()
   end
   
   #Añade las librerias al gesto
   def addlibrary (lib)
-    if !@librerias.include?(lib)#Comprobamos que ese obj no esta ya añadido
+    if !@librerias.include?(lib) && !existe_lib?(lib)#Comprobamos que ese obj no esta ya añadido
       @librerias.push(lib)
-      @sizes.push(lib.size)
-      @versiones[lib.name]=lib.version
     end
   end
   
@@ -64,6 +60,22 @@ class LibraryManager
     else
       yield "No tiene dependencias"
     end
+  end
+  
+  def sizes()
+    @librerias.collect { |elem| elem.size  }    
+  end
+  
+  def versions()
+    aux=Hash.new()
+    @librerias.each { |elem|  
+      aux[elem.name]=elem.version
+    }
+    return aux
+  end
+  
+  def existe_lib?(lib)
+    @librerias.find_index { |elem| elem.name.downcase==lib.name.downcase  } !=nil
   end
   
   def to_s
